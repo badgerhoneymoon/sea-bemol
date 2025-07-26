@@ -150,20 +150,26 @@ export default function ChordSelector({
             Select Chord Quality
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {CHORD_QUALITIES.map((chord) => (
-              <button
-                key={chord.quality}
-                onClick={() => handleQualitySelect(chord.quality)}
-                className={`p-4 rounded-lg border-2 text-left transition-all duration-200 ${
-                  selectedQuality === chord.quality
-                    ? 'border-blue-500 bg-blue-50 text-blue-700'
-                    : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                }`}
-              >
-                <div className="font-semibold">{chord.display}</div>
-                <div className="text-sm text-gray-500">{chord.description}</div>
-              </button>
-            ))}
+            {CHORD_QUALITIES.map((chord) => {
+              const isDisabled = chord.quality === 'add9' || chord.quality === '9';
+              return (
+                <button
+                  key={chord.quality}
+                  onClick={() => !isDisabled && handleQualitySelect(chord.quality)}
+                  disabled={isDisabled}
+                  className={`p-4 rounded-lg border-2 text-left transition-all duration-200 ${
+                    isDisabled
+                      ? 'border-gray-200 bg-gray-100 text-gray-400 cursor-not-allowed opacity-50'
+                      : selectedQuality === chord.quality
+                      ? 'border-blue-500 bg-blue-50 text-blue-700'
+                      : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                  }`}
+                >
+                  <div className="font-semibold">{chord.display} {isDisabled && '(Coming Soon)'}</div>
+                  <div className="text-sm text-gray-500">{chord.description}</div>
+                </button>
+              );
+            })}
           </div>
         </div>
       )}

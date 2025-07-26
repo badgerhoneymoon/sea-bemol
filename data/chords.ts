@@ -593,8 +593,10 @@ export function getChordByRootAndQuality(root: Note, quality: ChordQuality): Cho
 export function searchChords(query: string): Chord[] {
   const lowercaseQuery = query.toLowerCase();
   return CHORD_DATABASE.filter(chord => 
-    chord.symbol.toLowerCase().includes(lowercaseQuery) ||
+    // Exclude add9 and dominant 9 chords for now
+    chord.quality !== 'add9' && chord.quality !== '9' &&
+    (chord.symbol.toLowerCase().includes(lowercaseQuery) ||
     chord.root.toLowerCase().includes(lowercaseQuery) ||
-    chord.quality.toLowerCase().includes(lowercaseQuery)
+    chord.quality.toLowerCase().includes(lowercaseQuery))
   );
 }
