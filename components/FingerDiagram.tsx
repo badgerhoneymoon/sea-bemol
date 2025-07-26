@@ -51,7 +51,11 @@ export default function FingerDiagram({ hand, fingerings, chord, className = '' 
             return '♯5';
           }
           return '5';
-        case 3: // Seventh
+        case 3: // Fourth note
+          if (quality === '6') {
+            return '6';
+          }
+          // Seventh
           if (quality === 'major7') {
             return '7';
           }
