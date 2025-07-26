@@ -21,7 +21,7 @@ export default function HandComparison({ chord, variationIndex, className = '' }
         {chord.symbol} - {variation?.name} - Both Hands
       </h3>
 
-      <div className="space-y-8">
+      <div className="space-y-8 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-6">
         {/* Left Hand */}
         <div className="bg-green-50 rounded-lg p-4">
           <h4 className="text-lg font-semibold mb-4 text-center text-green-800">

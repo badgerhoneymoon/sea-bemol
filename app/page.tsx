@@ -167,13 +167,6 @@ export default function Home() {
                         }`}
                       >
                         {variation.name}
-                        <span className={`ml-2 text-xs px-2 py-1 rounded ${
-                          variation.difficulty === 'beginner' ? 'bg-blue-100 text-blue-700' :
-                          variation.difficulty === 'intermediate' ? 'bg-blue-200 text-blue-800' :
-                          'bg-blue-300 text-blue-900'
-                        }`}>
-                          {variation.difficulty}
-                        </span>
                       </button>
                     ))}
                   </div>

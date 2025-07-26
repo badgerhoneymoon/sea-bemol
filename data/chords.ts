@@ -1,4 +1,5 @@
-import { Chord, Note, ChordQuality } from '@/types';
+import { Chord, Note, ChordQuality, Fingering } from '@/types';
+import { generateFingeringVariations, calculateDifficulty } from '@/lib/utils/fingering-algorithm';
 
 const NOTES: Note[] = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 
@@ -7,6 +8,39 @@ function getNoteByOffset(root: Note, offset: number): string {
   const rootIndex = NOTES.indexOf(root);
   const targetIndex = (rootIndex + offset) % 12;
   return NOTES[targetIndex];
+}
+
+// Helper function to create chord variations using the algorithm
+function createChordVariations(notes: string[], baseName: string = 'Root Position') {
+  const variations = [];
+  
+  // Generate fingering variations for both hands
+  const rightHandVariations = generateFingeringVariations(notes, 'right');
+  const leftHandVariations = generateFingeringVariations(notes, 'left');
+  
+  // Create variations by combining different fingering options
+  for (let i = 0; i < Math.max(rightHandVariations.length, leftHandVariations.length); i++) {
+    const rightFingering = rightHandVariations[i] || rightHandVariations[0];
+    const leftFingering = leftHandVariations[i] || leftHandVariations[0];
+    
+    const difficulty = calculateDifficulty(rightFingering, notes);
+    
+    let variationName = baseName;
+    if (i > 0) {
+      variationName += ` (Alt ${i})`;
+    }
+    
+    variations.push({
+      name: variationName,
+      fingerings: {
+        right: rightFingering,
+        left: leftFingering
+      },
+      difficulty
+    });
+  }
+  
+  return variations;
 }
 
 // Generate chords for all keys
@@ -160,36 +194,19 @@ function generateChordsForAllKeys(): Chord[] {
     });
 
     // Minor 7th chord
+    const minor7Notes = [
+      root,
+      getNoteByOffset(root, 3), // minor third
+      getNoteByOffset(root, 7), // perfect fifth
+      getNoteByOffset(root, 10) // minor seventh
+    ];
+    
     chords.push({
       root,
       quality: 'minor7',
       symbol: `${root}m7`,
-      notes: [
-        root,
-        getNoteByOffset(root, 3), // minor third
-        getNoteByOffset(root, 7), // perfect fifth
-        getNoteByOffset(root, 10) // minor seventh
-      ],
-      variations: [
-        {
-          name: 'Root Position',
-          fingerings: {
-            right: [
-              { note: root, finger: 1 },
-              { note: getNoteByOffset(root, 3), finger: 2 },
-              { note: getNoteByOffset(root, 7), finger: 3 },
-              { note: getNoteByOffset(root, 10), finger: 5 }
-            ],
-            left: [
-              { note: root, finger: 5 },
-              { note: getNoteByOffset(root, 3), finger: 4 },
-              { note: getNoteByOffset(root, 7), finger: 3 },
-              { note: getNoteByOffset(root, 10), finger: 1 }
-            ]
-          },
-          difficulty: 'intermediate'
-        }
-      ]
+      notes: minor7Notes,
+      variations: createChordVariations(minor7Notes, 'Root Position')
     });
 
     // Sus2 chord

@@ -1,6 +1,7 @@
 'use client';
 
 import { Fingering } from '@/types';
+import { calculateKeyRange, calculateBlackKeyPositions } from '@/lib/utils/piano-range';
 
 interface PianoProps {
   activeFingerings: Fingering[];
@@ -35,34 +36,24 @@ const PianoKey = ({ note, isBlack, isActive, finger }: PianoKeyProps) => {
         </div>
       )}
       <span className={`text-xs sm:text-xs font-semibold ${isBlack ? 'text-white' : 'text-gray-700'}`}>
-        {note.replace('2', '')}
+        {note.replace(/\d+$/, '')}
       </span>
     </div>
   );
 };
 
 export default function Piano({ activeFingerings, className = '' }: PianoProps) {
-  // Single octave piano
-  const whiteKeys = [
-    'C', 'D', 'E', 'F', 'G', 'A', 'B'
-  ];
+  // Calculate dynamic key range based on active fingerings
+  const keyRange = calculateKeyRange(activeFingerings);
+  const whiteKeys = keyRange.whiteKeys;
   
-  // Responsive black key positions
-  const getBlackKeyPosition = (index: number) => {
-    // Mobile positions (w-9 white keys = 36px each)
-    const mobilePositions = [27, 63, 135, 171, 207];
-    // Desktop positions (w-12 white keys = 48px each) 
-    const desktopPositions = [36, 84, 180, 228, 276];
-    return { mobile: mobilePositions[index], desktop: desktopPositions[index] };
-  };
+  // Mobile and desktop key widths
+  const mobileKeyWidth = 36; // w-9 = 36px
+  const desktopKeyWidth = 48; // w-12 = 48px
   
-  const blackKeys = [
-    { note: 'C#', positions: getBlackKeyPosition(0) },
-    { note: 'D#', positions: getBlackKeyPosition(1) },
-    { note: 'F#', positions: getBlackKeyPosition(2) },
-    { note: 'G#', positions: getBlackKeyPosition(3) },
-    { note: 'A#', positions: getBlackKeyPosition(4) }
-  ];
+  // Calculate black key positions dynamically
+  const mobileBlackKeys = calculateBlackKeyPositions(whiteKeys, mobileKeyWidth);
+  const desktopBlackKeys = calculateBlackKeyPositions(whiteKeys, desktopKeyWidth);
   
   // Helper function to find active fingering for a note
   const getFingeringForNote = (note: string): Fingering | undefined => {
@@ -90,14 +81,15 @@ export default function Piano({ activeFingerings, className = '' }: PianoProps) 
             />
           );
         })}
-        {blackKeys.map((key, idx) => {
+        {mobileBlackKeys.map((key, idx) => {
           const fingering = getFingeringForNote(key.note);
+          const desktopKey = desktopBlackKeys[idx];
           return (
             <div 
               key={`black-${idx}`}
               className="absolute"
               style={{ 
-                left: `${key.positions.mobile}px`,
+                left: `${key.left}px`,
                 top: '0'
               }}
             >
@@ -112,7 +104,7 @@ export default function Piano({ activeFingerings, className = '' }: PianoProps) 
               <div 
                 className="hidden sm:block absolute"
                 style={{ 
-                  left: `${key.positions.desktop - key.positions.mobile}px`,
+                  left: `${desktopKey ? desktopKey.left - key.left : 0}px`,
                   top: '0'
                 }}
               >
