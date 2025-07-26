@@ -66,6 +66,57 @@ export default function Home() {
     }
   };
 
+  const handlePlayChord = async () => {
+    if (!currentChord) return;
+    
+    try {
+      // Import playChord dynamically to avoid SSR issues
+      const { playChord } = await import('@/lib/utils/audio');
+      
+      const variation = currentChord.variations[selectedVariation];
+      const leftFingerings = variation?.fingerings.left || [];
+      const rightFingerings = variation?.fingerings.right || [];
+
+      // Collect all notes from both hands' fingerings
+      const allNotes: string[] = [];
+      
+      // Add notes from right hand fingerings
+      rightFingerings.forEach(fingering => {
+        let noteWithOctave = fingering.note;
+        
+        // Add octave if specified in fingering
+        if (fingering.octave !== undefined) {
+          const baseOctave = 4; // Default middle octave
+          const actualOctave = baseOctave + fingering.octave;
+          noteWithOctave = `${fingering.note}${actualOctave}`;
+        }
+        
+        allNotes.push(noteWithOctave);
+      });
+      
+      // Add notes from left hand fingerings
+      leftFingerings.forEach(fingering => {
+        let noteWithOctave = fingering.note;
+        
+        // Add octave if specified in fingering
+        if (fingering.octave !== undefined) {
+          const baseOctave = 4; // Default middle octave
+          const actualOctave = baseOctave + fingering.octave;
+          noteWithOctave = `${fingering.note}${actualOctave}`;
+        }
+        
+        allNotes.push(noteWithOctave);
+      });
+      
+      // Remove duplicates while preserving octave differences
+      const uniqueNotes = [...new Set(allNotes)];
+      
+      await playChord(uniqueNotes, 1.5, 0.3);
+    } catch (error) {
+      console.error('Failed to play chord:', error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
       <div className="max-w-7xl mx-auto p-4">
@@ -139,9 +190,56 @@ export default function Home() {
 
                 {currentChord && (
                   <>
+                    {/* Chord Header */}
+                    <div className="flex items-center justify-center mb-6 mt-8 pt-6 border-t border-gray-200">
+                      <div className="flex items-center gap-4">
+                        <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg font-bold text-xl shadow-md">
+                          {currentChord.symbol}
+                        </div>
+                        <span className="text-sm font-medium text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
+                          {currentChord.quality === 'major' ? 'Major' :
+                           currentChord.quality === 'minor' ? 'Minor' :
+                           currentChord.quality === '7' ? 'Dominant 7th' :
+                           currentChord.quality === 'major7' ? 'Major 7th' :
+                           currentChord.quality === 'minor7' ? 'Minor 7th' :
+                           currentChord.quality === 'sus2' ? 'Sus2' :
+                           currentChord.quality === 'sus4' ? 'Sus4' :
+                           currentChord.quality === '6' ? '6th' :
+                           currentChord.quality === 'minor6' ? 'Minor 6th' :
+                           currentChord.quality === 'add9' ? 'Add9' :
+                           currentChord.quality === 'diminished' ? 'Diminished' :
+                           currentChord.quality === 'augmented' ? 'Augmented' :
+                           currentChord.quality === 'diminished7' ? 'Diminished 7th' :
+                           currentChord.quality === 'half-diminished7' ? 'Half-diminished 7th' :
+                           currentChord.quality === '9' ? 'Dominant 9th' :
+                           currentChord.quality === '5' ? 'Power Chord' : currentChord.quality}
+                        </span>
+                      </div>
+                      <div className="flex items-center ml-4 gap-2">
+                        <button
+                          onClick={handlePlayChord}
+                          className="p-2 rounded-full w-10 h-10 flex items-center justify-center transition-all duration-200 text-lg bg-green-100 text-green-600 hover:bg-green-200 hover:text-green-700"
+                          title="Play chord"
+                        >
+                          🔊
+                        </button>
+                        <button
+                          onClick={handleFavoriteToggle}
+                          className={`p-2 rounded-full w-10 h-10 flex items-center justify-center transition-all duration-200 text-lg ${
+                            isFavorite(currentChord, selectedVariation)
+                              ? 'text-yellow-500 bg-yellow-100 hover:bg-yellow-200'
+                              : 'text-gray-500 hover:text-yellow-500 hover:bg-yellow-100'
+                          }`}
+                          title={isFavorite(currentChord, selectedVariation) ? 'Remove from favorites' : 'Add to favorites'}
+                        >
+                          {isFavorite(currentChord, selectedVariation) ? '⭐' : '☆'}
+                        </button>
+                      </div>
+                    </div>
+
                     {/* Variation Selection */}
                     {currentChord.variations.length > 1 && (
-                      <div className="mt-8 pt-6 border-t border-gray-200">
+                      <div className="mb-6">
                         <h3 className="text-lg font-semibold mb-3 text-center text-gray-700">
                           Fingering Variations
                         </h3>
@@ -164,7 +262,7 @@ export default function Home() {
                     )}
 
                     {/* Piano Display - Both Hands */}
-                    <div className="mt-8 pt-6 border-t border-gray-200">
+                    <div>
                       <HandComparison 
                         chord={currentChord} 
                         variationIndex={selectedVariation}
@@ -173,6 +271,7 @@ export default function Home() {
                         className="border-0 shadow-none p-0"
                       />
                     </div>
+
                   </>
                 )}
               </>

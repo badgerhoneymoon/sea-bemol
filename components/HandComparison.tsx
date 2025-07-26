@@ -61,34 +61,7 @@ export default function HandComparison({ chord, variationIndex, onFavoriteToggle
   };
 
   return (
-    <div className={`bg-white rounded-xl shadow-lg p-6 ${className}`}>
-      <div className="flex items-center justify-center mb-6 relative">
-        <h3 className="text-xl font-semibold text-center text-gray-700">
-          {chord.symbol} - {variation?.name}
-        </h3>
-        <div className="flex items-center ml-4 gap-2">
-          <button
-            onClick={handlePlayChord}
-            className="p-2 rounded-full w-10 h-10 flex items-center justify-center transition-all duration-200 text-lg bg-green-100 text-green-600 hover:bg-green-200 hover:text-green-700"
-            title="Play chord"
-          >
-            🔊
-          </button>
-          {onFavoriteToggle && (
-            <button
-              onClick={onFavoriteToggle}
-              className={`p-2 rounded-full w-10 h-10 flex items-center justify-center transition-all duration-200 text-lg ${
-                isFavorite
-                  ? 'text-yellow-500 bg-yellow-100 hover:bg-yellow-200'
-                  : 'text-gray-500 hover:text-yellow-500 hover:bg-yellow-100'
-              }`}
-              title={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-            >
-              {isFavorite ? '⭐' : '☆'}
-            </button>
-          )}
-        </div>
-      </div>
+    <div className={`${className}`}>
 
       <div className="space-y-8 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-6">
         {/* Left Hand */}

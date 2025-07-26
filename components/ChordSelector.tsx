@@ -71,49 +71,6 @@ export default function ChordSelector({
   return (
     <div className={`bg-white rounded-xl shadow-lg p-6 ${className}`}>
 
-      {/* Current Selection Display */}
-      {selectedRoot && selectedQuality && (
-        <div className="text-center mb-6">
-          <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg font-bold text-xl inline-block shadow-md">
-            {selectedRoot}{selectedQuality === 'major' ? '' : 
-             selectedQuality === 'minor' ? 'm' :
-             selectedQuality === '7' ? '7' :
-             selectedQuality === 'major7' ? 'maj7' :
-             selectedQuality === 'minor7' ? 'm7' :
-             selectedQuality === 'sus2' ? 'sus2' :
-             selectedQuality === 'sus4' ? 'sus4' :
-             selectedQuality === '6' ? '6' :
-             selectedQuality === 'minor6' ? 'm6' :
-             selectedQuality === 'add9' ? 'add9' :
-             selectedQuality === 'diminished' ? '°' :
-             selectedQuality === 'augmented' ? '+' :
-             selectedQuality === 'diminished7' ? '°7' :
-             selectedQuality === 'half-diminished7' ? 'ø7' :
-             selectedQuality === '9' ? '9' :
-             selectedQuality === '5' ? '5' : ''}
-          </div>
-          <div className="mt-2">
-            <span className="text-sm font-medium text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
-              {selectedQuality === 'major' ? 'Major' :
-               selectedQuality === 'minor' ? 'Minor' :
-               selectedQuality === '7' ? 'Dominant 7th' :
-               selectedQuality === 'major7' ? 'Major 7th' :
-               selectedQuality === 'minor7' ? 'Minor 7th' :
-               selectedQuality === 'sus2' ? 'Sus2' :
-               selectedQuality === 'sus4' ? 'Sus4' :
-               selectedQuality === '6' ? '6th' :
-               selectedQuality === 'minor6' ? 'Minor 6th' :
-               selectedQuality === 'add9' ? 'Add9' :
-               selectedQuality === 'diminished' ? 'Diminished' :
-               selectedQuality === 'augmented' ? 'Augmented' :
-               selectedQuality === 'diminished7' ? 'Diminished 7th' :
-               selectedQuality === 'half-diminished7' ? 'Half-diminished 7th' :
-               selectedQuality === '9' ? 'Dominant 9th' :
-               selectedQuality === '5' ? 'Power Chord' : selectedQuality}
-            </span>
-          </div>
-        </div>
-      )}
 
       {/* Content based on current step */}
       {step === 'popular' && (
