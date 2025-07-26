@@ -17,7 +17,7 @@ export default function HandSelector({ selectedHand, onHandChange, className = '
           onClick={() => onHandChange('left')}
           className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
             selectedHand === 'left'
-              ? 'bg-green-500 text-white shadow-md transform scale-105'
+              ? 'bg-blue-600 text-white shadow-md transform scale-105'
               : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
           }`}
         >
@@ -28,7 +28,7 @@ export default function HandSelector({ selectedHand, onHandChange, className = '
           onClick={() => onHandChange('right')}
           className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
             selectedHand === 'right'
-              ? 'bg-green-500 text-white shadow-md transform scale-105'
+              ? 'bg-blue-600 text-white shadow-md transform scale-105'
               : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
           }`}
         >
