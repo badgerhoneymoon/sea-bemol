@@ -55,7 +55,7 @@ export default function HandComparison({ chord, variationIndex, onFavoriteToggle
           </div>
           
           <div className="flex justify-center">
-            <FingerDiagram hand="left" fingerings={leftFingerings} />
+            <FingerDiagram hand="left" fingerings={leftFingerings} chord={chord} />
           </div>
         </div>
 
@@ -75,7 +75,7 @@ export default function HandComparison({ chord, variationIndex, onFavoriteToggle
           </div>
           
           <div className="flex justify-center">
-            <FingerDiagram hand="right" fingerings={rightFingerings} />
+            <FingerDiagram hand="right" fingerings={rightFingerings} chord={chord} />
           </div>
         </div>
       </div>
