@@ -120,20 +120,6 @@ export default function Home() {
                 </button>
               </div>
             </div>
-            {/* Favorite Button */}
-            {currentChord && (
-              <button
-                onClick={handleFavoriteToggle}
-                className={`absolute top-4 right-4 p-2 rounded-lg transition-all duration-200 ${
-                  isFavorite(currentChord, selectedVariation)
-                    ? 'text-blue-600 bg-blue-100 hover:bg-blue-200'
-                    : 'text-gray-400 hover:text-blue-600 hover:bg-blue-100'
-                }`}
-                title={isFavorite(currentChord, selectedVariation) ? 'Remove from favorites' : 'Add to favorites'}
-              >
-                {isFavorite(currentChord, selectedVariation) ? '⭐' : '☆'}
-              </button>
-            )}
 
             {/* Tab Content */}
             {activeTab === 'chords' && (
@@ -177,6 +163,8 @@ export default function Home() {
                       <HandComparison 
                         chord={currentChord} 
                         variationIndex={selectedVariation}
+                        onFavoriteToggle={handleFavoriteToggle}
+                        isFavorite={isFavorite(currentChord, selectedVariation)}
                         className="border-0 shadow-none p-0"
                       />
                     </div>
