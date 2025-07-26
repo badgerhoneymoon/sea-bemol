@@ -30,7 +30,10 @@ export default function HandComparison({ chord, variationIndex, className = '' }
           
           <div className="mb-4 overflow-x-auto">
             <div className="flex justify-center">
-              <Piano activeFingerings={leftFingerings} />
+              <Piano 
+                key={`left-${chord.symbol}-${variationIndex}`}
+                activeFingerings={leftFingerings} 
+              />
             </div>
           </div>
           
@@ -47,7 +50,10 @@ export default function HandComparison({ chord, variationIndex, className = '' }
           
           <div className="mb-4 overflow-x-auto">
             <div className="flex justify-center">
-              <Piano activeFingerings={rightFingerings} />
+              <Piano 
+                key={`right-${chord.symbol}-${variationIndex}`}
+                activeFingerings={rightFingerings} 
+              />
             </div>
           </div>
           
