@@ -134,8 +134,8 @@ export function calculateBlackKeyPositions(whiteKeys: string[], keyWidth: number
         const octave = whiteKey.match(/\d+$/)?.[0] || '';
         const displayNote = blackNote + octave;
         
-        // Position black key between current and next white key
-        const leftPosition = (index + 0.7) * keyWidth; // Slightly offset to the right
+        // Position black key exactly between current and next white key
+        const leftPosition = (index + 0.75) * keyWidth; // Properly centered between white keys
         blackKeyPositions.push({
           note: displayNote,
           left: leftPosition
