@@ -64,7 +64,7 @@ export default function HandComparison({ chord, variationIndex, onFavoriteToggle
     <div className={`bg-white rounded-xl shadow-lg p-6 ${className}`}>
       <div className="flex items-center justify-center mb-6 relative">
         <h3 className="text-xl font-semibold text-center text-gray-700">
-          {chord.symbol} - {variation?.name} - Both Hands
+          {chord.symbol} - {variation?.name}
         </h3>
         <div className="flex items-center ml-4 gap-2">
           <button

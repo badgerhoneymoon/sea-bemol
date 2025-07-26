@@ -92,6 +92,26 @@ export default function ChordSelector({
              selectedQuality === '9' ? '9' :
              selectedQuality === '5' ? '5' : ''}
           </div>
+          <div className="mt-2">
+            <span className="text-sm font-medium text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
+              {selectedQuality === 'major' ? 'Major' :
+               selectedQuality === 'minor' ? 'Minor' :
+               selectedQuality === '7' ? 'Dominant 7th' :
+               selectedQuality === 'major7' ? 'Major 7th' :
+               selectedQuality === 'minor7' ? 'Minor 7th' :
+               selectedQuality === 'sus2' ? 'Sus2' :
+               selectedQuality === 'sus4' ? 'Sus4' :
+               selectedQuality === '6' ? '6th' :
+               selectedQuality === 'minor6' ? 'Minor 6th' :
+               selectedQuality === 'add9' ? 'Add9' :
+               selectedQuality === 'diminished' ? 'Diminished' :
+               selectedQuality === 'augmented' ? 'Augmented' :
+               selectedQuality === 'diminished7' ? 'Diminished 7th' :
+               selectedQuality === 'half-diminished7' ? 'Half-diminished 7th' :
+               selectedQuality === '9' ? 'Dominant 9th' :
+               selectedQuality === '5' ? 'Power Chord' : selectedQuality}
+            </span>
+          </div>
         </div>
       )}
 
