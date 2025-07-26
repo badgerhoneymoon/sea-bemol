@@ -31,7 +31,14 @@ export default function FingerDiagram({ hand, fingerings, chord, className = '' 
     const getChordToneWithQuality = (index: number, quality: string): string => {
       switch (index) {
         case 0: return '1'; // Root is always 1
-        case 1: // Third
+        case 1: // Second note
+          if (quality === 'sus2') {
+            return '2';
+          }
+          if (quality === 'sus4') {
+            return '4';
+          }
+          // Third
           if (quality.includes('minor') || quality.includes('diminished') || quality.includes('half-diminished')) {
             return '♭3';
           }
