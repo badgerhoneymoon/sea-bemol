@@ -32,6 +32,11 @@ export default function Home() {
     ? getChordByRootAndQuality(selectedRoot, selectedQuality)
     : null;
 
+  // Debug: Log current state
+  useEffect(() => {
+    console.log('Debug - selectedRoot:', selectedRoot, 'selectedQuality:', selectedQuality, 'currentChord:', currentChord?.symbol);
+  }, [selectedRoot, selectedQuality, currentChord]);
+
 
   // Add to recent chords when chord changes
   // Avoid including functions/objects that change every render to prevent infinite loops
