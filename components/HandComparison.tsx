@@ -57,16 +57,7 @@ export default function HandComparison({ chord, variationIndex, className = '' }
         </div>
       </div>
 
-      {/* Practice Tips */}
-      <div className="mt-6 p-4 bg-purple-50 rounded-lg">
-        <h4 className="font-semibold text-purple-800 mb-2">Practice Tips</h4>
-        <ul className="text-sm space-y-1 text-purple-700">
-          <li>• Practice each hand separately first</li>
-          <li>• Start slowly and focus on finger positioning</li>
-          <li>• Notice the mirrored finger patterns between hands</li>
-          <li>• Gradually increase tempo once comfortable</li>
-        </ul>
-      </div>
+
     </div>
   );
 }
