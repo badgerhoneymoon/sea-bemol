@@ -98,8 +98,8 @@ export default function SearchChords({ onChordSelect, className = '' }: SearchCh
       {isOpen && searchQuery.trim() && searchResults.length === 0 && (
         <div className="absolute top-full left-0 right-0 z-50 mt-2 bg-white border border-gray-200 rounded-lg shadow-xl p-4 text-center text-gray-500">
           <div className="text-2xl mb-2">🎼</div>
-          <p>No chords found for "{searchQuery}"</p>
-          <p className="text-sm mt-1">Try searching for chord symbols like "Cmaj7" or "F#m"</p>
+          <p>No chords found for &quot;{searchQuery}&quot;</p>
+          <p className="text-sm mt-1">Try searching for chord symbols like &quot;Cmaj7&quot; or &quot;F#m&quot;</p>
         </div>
       )}
     </div>

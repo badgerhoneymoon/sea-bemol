@@ -27,9 +27,7 @@ export default function Home() {
     addToFavorites, 
     removeFromFavorites, 
     addToRecent, 
-    isFavorite,
-    clearFavorites,
-    clearRecent
+    isFavorite
   } = useFavorites();
 
   // Get current chord data
@@ -47,6 +45,7 @@ export default function Home() {
       addToRecent(currentChord, selectedVariation);
     }
     // Only depend on primitive values that actually represent a new chord selection
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedRoot, selectedQuality, selectedVariation]);
 
   const handleChordSelect = (root: Note, quality: ChordQuality, variationIndex: number = 0) => {

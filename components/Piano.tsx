@@ -16,7 +16,7 @@ interface PianoKeyProps {
   octave?: number;
 }
 
-const PianoKey = ({ note, isBlack, isActive, finger, x, octave }: PianoKeyProps) => {
+const PianoKey = ({ note, isBlack, isActive, finger, x }: PianoKeyProps) => {
   const baseClasses = isBlack 
     ? "absolute bg-gray-800 text-white w-8 h-24 rounded-b-sm z-10 flex flex-col items-center justify-end pb-2 shadow-lg"
     : "bg-white border border-gray-300 w-12 h-36 rounded-b-md flex flex-col items-center justify-end pb-2 relative shadow-sm";
@@ -44,11 +44,9 @@ const PianoKey = ({ note, isBlack, isActive, finger, x, octave }: PianoKeyProps)
 };
 
 export default function Piano({ activeFingerings, className = '' }: PianoProps) {
-  // Extended piano range to accommodate all chord types
+  // Single octave piano
   const whiteKeys = [
-    'C', 'D', 'E', 'F', 'G', 'A', 'B', 
-    'C2', 'D2', 'E2', 'F2', 'G2', 'A2', 'B2',
-    'C3'
+    'C', 'D', 'E', 'F', 'G', 'A', 'B'
   ];
   
   const blackKeys = [
@@ -56,13 +54,7 @@ export default function Piano({ activeFingerings, className = '' }: PianoProps) 
     { note: 'D#', x: 84 },
     { note: 'F#', x: 180 },
     { note: 'G#', x: 228 },
-    { note: 'A#', x: 276 },
-    { note: 'C#2', x: 372 },
-    { note: 'D#2', x: 420 },
-    { note: 'F#2', x: 516 },
-    { note: 'G#2', x: 564 },
-    { note: 'A#2', x: 612 },
-    { note: 'C#3', x: 708 }
+    { note: 'A#', x: 276 }
   ];
   
   // Helper function to find active fingering for a note
