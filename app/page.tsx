@@ -192,11 +192,11 @@ export default function Home() {
                   <>
                     {/* Chord Header */}
                     <div className="flex items-center justify-center mb-6 mt-8 pt-6 border-t border-gray-200">
-                      <div className="flex items-center gap-4">
-                        <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg font-bold text-xl shadow-md">
+                      <div className="flex items-center gap-3">
+                        <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-5 py-2.5 rounded-lg font-bold text-lg shadow-md h-10 flex items-center">
                           {currentChord.symbol}
                         </div>
-                        <span className="text-sm font-medium text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
+                        <span className="text-sm font-medium text-gray-600 bg-gray-100 px-4 py-2.5 rounded-full h-10 flex items-center">
                           {currentChord.quality === 'major' ? 'Major' :
                            currentChord.quality === 'minor' ? 'Minor' :
                            currentChord.quality === '7' ? 'Dominant 7th' :
@@ -214,18 +214,16 @@ export default function Home() {
                            currentChord.quality === '9' ? 'Dominant 9th' :
                            currentChord.quality === '5' ? 'Power Chord' : currentChord.quality}
                         </span>
-                      </div>
-                      <div className="flex items-center ml-4 gap-2">
                         <button
                           onClick={handlePlayChord}
-                          className="p-2 rounded-full w-10 h-10 flex items-center justify-center transition-all duration-200 text-lg bg-green-100 text-green-600 hover:bg-green-200 hover:text-green-700"
+                          className="rounded-full w-10 h-10 flex items-center justify-center transition-all duration-200 text-base bg-green-100 text-green-600 hover:bg-green-200 hover:text-green-700"
                           title="Play chord"
                         >
                           🔊
                         </button>
                         <button
                           onClick={handleFavoriteToggle}
-                          className={`p-2 rounded-full w-10 h-10 flex items-center justify-center transition-all duration-200 text-lg ${
+                          className={`rounded-full w-10 h-10 flex items-center justify-center transition-all duration-200 text-base ${
                             isFavorite(currentChord, selectedVariation)
                               ? 'text-yellow-500 bg-yellow-100 hover:bg-yellow-200'
                               : 'text-gray-500 hover:text-yellow-500 hover:bg-yellow-100'
