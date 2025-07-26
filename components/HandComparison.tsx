@@ -40,18 +40,16 @@ export default function HandComparison({ chord, variationIndex, onFavoriteToggle
 
       <div className="space-y-8 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-6">
         {/* Left Hand */}
-        <div className="bg-green-50 rounded-lg p-4">
+        <div className="bg-green-50 rounded-lg p-2 sm:p-4">
           <h4 className="text-lg font-semibold mb-4 text-center text-green-800">
             👈 Left Hand
           </h4>
           
-          <div className="mb-4 overflow-x-auto">
-            <div className="flex justify-center">
-              <Piano 
-                key={`left-${chord.symbol}-${variationIndex}`}
-                activeFingerings={leftFingerings} 
-              />
-            </div>
+          <div className="mb-4 -mx-2 sm:mx-0">
+            <Piano 
+              key={`left-${chord.symbol}-${variationIndex}`}
+              activeFingerings={leftFingerings} 
+            />
           </div>
           
           <div className="flex justify-center">
@@ -60,18 +58,16 @@ export default function HandComparison({ chord, variationIndex, onFavoriteToggle
         </div>
 
         {/* Right Hand */}
-        <div className="bg-blue-50 rounded-lg p-4">
+        <div className="bg-blue-50 rounded-lg p-2 sm:p-4">
           <h4 className="text-lg font-semibold mb-4 text-center text-blue-800">
             👉 Right Hand
           </h4>
           
-          <div className="mb-4 overflow-x-auto">
-            <div className="flex justify-center">
-              <Piano 
-                key={`right-${chord.symbol}-${variationIndex}`}
-                activeFingerings={rightFingerings} 
-              />
-            </div>
+          <div className="mb-4 -mx-2 sm:mx-0">
+            <Piano 
+              key={`right-${chord.symbol}-${variationIndex}`}
+              activeFingerings={rightFingerings} 
+            />
           </div>
           
           <div className="flex justify-center">

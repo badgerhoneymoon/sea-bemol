@@ -19,7 +19,7 @@ interface PianoKeyProps {
 const PianoKey = ({ note, isBlack, isActive, finger }: PianoKeyProps) => {
   const baseClasses = isBlack 
     ? "absolute bg-gray-800 text-white w-6 sm:w-8 h-20 sm:h-24 rounded-b-sm z-10 flex flex-col items-center justify-end pb-1 sm:pb-2 shadow-lg"
-    : "bg-white border border-gray-300 w-9 sm:w-12 h-28 sm:h-36 rounded-b-md flex flex-col items-center justify-end pb-1 sm:pb-2 relative shadow-sm";
+    : "bg-white border border-gray-300 w-8 sm:w-12 h-28 sm:h-36 rounded-b-md flex flex-col items-center justify-end pb-1 sm:pb-2 relative shadow-sm";
   
   const activeClass = isActive ? (isBlack ? "bg-blue-600" : "bg-blue-400") : "";
   const hoverClass = isBlack 
@@ -48,7 +48,7 @@ export default function Piano({ activeFingerings, className = '' }: PianoProps) 
   const whiteKeys = keyRange.whiteKeys;
   
   // Mobile and desktop key widths
-  const mobileKeyWidth = 36; // w-9 = 36px
+  const mobileKeyWidth = 32; // w-8 = 32px
   const desktopKeyWidth = 48; // w-12 = 48px
   
   // Calculate black key positions dynamically
@@ -99,8 +99,9 @@ export default function Piano({ activeFingerings, className = '' }: PianoProps) 
   };
   
   return (
-    <div className={`relative inline-block bg-gray-100 p-4 rounded-lg shadow-xl ${className}`}>
-      <div className="relative flex">
+    <div className={`flex justify-center w-full ${className}`}>
+      <div className="relative inline-flex bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 p-2 sm:p-4 rounded-xl sm:rounded-2xl shadow-2xl">
+        <div className="relative flex bg-white p-1 rounded-lg sm:rounded-xl shadow-inner border border-gray-200">
         {whiteKeys.map((note, idx) => {
           const fingering = getFingeringForNote(note);
           return (
@@ -150,6 +151,7 @@ export default function Piano({ activeFingerings, className = '' }: PianoProps) 
             </div>
           );
         })}
+        </div>
       </div>
     </div>
   );
