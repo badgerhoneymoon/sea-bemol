@@ -66,16 +66,33 @@ export default function Piano({ activeFingerings, className = '' }: PianoProps) 
         const expectedOctave = (4 + f.octave).toString();
         return f.note === baseNote && noteOctave === expectedOctave;
       }
-      // For notes without octave property, only match base octave (4) exactly
-      return f.note === baseNote && (!noteOctave || noteOctave === '4');
+      return false; // Don't match here for non-octave fingerings
     });
     
     if (exactMatch) return exactMatch;
     
-    // If no exact match and we're looking for a note without octave number,
-    // try to find any matching base note
-    if (!noteOctave) {
-      return activeFingerings.find(f => f.note === baseNote && !f.octave);
+    // For fingerings without octave property, only match the first occurrence
+    const baseMatches = activeFingerings.filter(f => {
+      return f.note === baseNote && !f.octave;
+    });
+    
+    if (baseMatches.length > 0) {
+      // For basic triads, we want to avoid duplicate finger numbers
+      // Only match the first occurrence in the piano range (lowest octave)
+      if (!noteOctave || noteOctave === '4') {
+        return baseMatches[0];
+      }
+      
+      // For higher octaves, only match if this note doesn't already appear in a lower octave
+      const hasLowerOctaveVersion = whiteKeys.some(whiteKey => {
+        const whiteBaseNote = whiteKey.replace(/\d+$/, '');
+        const whiteOctave = whiteKey.match(/\d+$/)?.[0];
+        return whiteBaseNote === baseNote && (!whiteOctave || whiteOctave === '4');
+      });
+      
+      if (!hasLowerOctaveVersion) {
+        return baseMatches[0];
+      }
     }
     
     return undefined;
