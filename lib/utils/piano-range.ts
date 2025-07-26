@@ -88,7 +88,8 @@ export function calculateKeyRange(fingerings: Fingering[]): KeyRange {
     
     // Determine which octave this key belongs to
     const octave = startOctave + Math.floor((startingWhiteKeyIndex + i) / WHITE_KEYS.length);
-    const displayNote = octave !== 4 ? `${whiteKey}${octave}` : whiteKey;
+    // Always append the octave number to ensure consistent note strings (e.g., "C4" instead of just "C")
+    const displayNote = `${whiteKey}${octave}`;
     
     whiteKeys.push(displayNote);
   }
