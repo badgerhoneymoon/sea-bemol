@@ -12,14 +12,13 @@ interface PianoKeyProps {
   isBlack: boolean;
   isActive: boolean;
   finger?: number;
-  x?: number;
   octave?: number;
 }
 
-const PianoKey = ({ note, isBlack, isActive, finger, x }: PianoKeyProps) => {
+const PianoKey = ({ note, isBlack, isActive, finger }: PianoKeyProps) => {
   const baseClasses = isBlack 
-    ? "absolute bg-gray-800 text-white w-8 h-24 rounded-b-sm z-10 flex flex-col items-center justify-end pb-2 shadow-lg"
-    : "bg-white border border-gray-300 w-12 h-36 rounded-b-md flex flex-col items-center justify-end pb-2 relative shadow-sm";
+    ? "absolute bg-gray-800 text-white w-6 sm:w-8 h-20 sm:h-24 rounded-b-sm z-10 flex flex-col items-center justify-end pb-1 sm:pb-2 shadow-lg"
+    : "bg-white border border-gray-300 w-9 sm:w-12 h-28 sm:h-36 rounded-b-md flex flex-col items-center justify-end pb-1 sm:pb-2 relative shadow-sm";
   
   const activeClass = isActive ? (isBlack ? "bg-blue-600" : "bg-blue-400") : "";
   const hoverClass = isBlack 
@@ -29,14 +28,13 @@ const PianoKey = ({ note, isBlack, isActive, finger, x }: PianoKeyProps) => {
   return (
     <div 
       className={`${baseClasses} ${activeClass} ${!isActive ? hoverClass : ''} cursor-pointer`}
-      style={isBlack ? { left: `${x}px`, top: '0' } : {}}
     >
       {isActive && finger && (
-        <div className="bg-red-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold mb-1 shadow-md">
+        <div className="bg-red-500 text-white rounded-full w-5 h-5 sm:w-7 sm:h-7 flex items-center justify-center text-xs sm:text-sm font-bold mb-1 shadow-md">
           {finger}
         </div>
       )}
-      <span className={`text-xs font-semibold ${isBlack ? 'text-white' : 'text-gray-700'}`}>
+      <span className={`text-xs sm:text-xs font-semibold ${isBlack ? 'text-white' : 'text-gray-700'}`}>
         {note.replace('2', '')}
       </span>
     </div>
@@ -49,12 +47,21 @@ export default function Piano({ activeFingerings, className = '' }: PianoProps) 
     'C', 'D', 'E', 'F', 'G', 'A', 'B'
   ];
   
+  // Responsive black key positions
+  const getBlackKeyPosition = (index: number) => {
+    // Mobile positions (w-9 white keys = 36px each)
+    const mobilePositions = [27, 63, 135, 171, 207];
+    // Desktop positions (w-12 white keys = 48px each) 
+    const desktopPositions = [36, 84, 180, 228, 276];
+    return { mobile: mobilePositions[index], desktop: desktopPositions[index] };
+  };
+  
   const blackKeys = [
-    { note: 'C#', x: 36 },
-    { note: 'D#', x: 84 },
-    { note: 'F#', x: 180 },
-    { note: 'G#', x: 228 },
-    { note: 'A#', x: 276 }
+    { note: 'C#', positions: getBlackKeyPosition(0) },
+    { note: 'D#', positions: getBlackKeyPosition(1) },
+    { note: 'F#', positions: getBlackKeyPosition(2) },
+    { note: 'G#', positions: getBlackKeyPosition(3) },
+    { note: 'A#', positions: getBlackKeyPosition(4) }
   ];
   
   // Helper function to find active fingering for a note
@@ -86,14 +93,37 @@ export default function Piano({ activeFingerings, className = '' }: PianoProps) 
         {blackKeys.map((key, idx) => {
           const fingering = getFingeringForNote(key.note);
           return (
-            <PianoKey
+            <div 
               key={`black-${idx}`}
-              note={key.note}
-              isBlack={true}
-              isActive={!!fingering}
-              finger={fingering?.finger}
-              x={key.x}
-            />
+              className="absolute"
+              style={{ 
+                left: `${key.positions.mobile}px`,
+                top: '0'
+              }}
+            >
+              <div className="sm:hidden">
+                <PianoKey
+                  note={key.note}
+                  isBlack={true}
+                  isActive={!!fingering}
+                  finger={fingering?.finger}
+                />
+              </div>
+              <div 
+                className="hidden sm:block absolute"
+                style={{ 
+                  left: `${key.positions.desktop - key.positions.mobile}px`,
+                  top: '0'
+                }}
+              >
+                <PianoKey
+                  note={key.note}
+                  isBlack={true}
+                  isActive={!!fingering}
+                  finger={fingering?.finger}
+                />
+              </div>
+            </div>
           );
         })}
       </div>
