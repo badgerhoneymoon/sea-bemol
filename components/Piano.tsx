@@ -79,7 +79,7 @@ export default function Piano({ activeFingerings, className = '' }: PianoProps) 
     const noteOctave = note.match(/\d+$/)?.[0];
     
     // First, try to find an exact octave match
-    const exactMatch = activeFingerings.find(f => {
+    const exactMatch = activeFingerings.find((f: Fingering) => {
       if (f.octave) {
         const expectedOctave = (4 + f.octave).toString();
         return f.note === baseNote && noteOctave === expectedOctave;
@@ -90,7 +90,7 @@ export default function Piano({ activeFingerings, className = '' }: PianoProps) 
     if (exactMatch) return exactMatch;
     
     // For fingerings without octave property, only match the first occurrence
-    const baseMatches = activeFingerings.filter(f => {
+    const baseMatches = activeFingerings.filter((f: Fingering) => {
       return f.note === baseNote && !f.octave;
     });
     
