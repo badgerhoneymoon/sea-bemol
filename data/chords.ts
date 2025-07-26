@@ -179,13 +179,13 @@ function generateChordsForAllKeys(): Chord[] {
               { note: root, finger: 1 },
               { note: getNoteByOffset(root, 4), finger: 2 },
               { note: getNoteByOffset(root, 7), finger: 3 },
-              { note: getNoteByOffset(root, 11), finger: 5 }
+              { note: getNoteByOffset(root, 11), finger: 5, octave: 1 }
             ],
             left: [
               { note: root, finger: 5 },
               { note: getNoteByOffset(root, 4), finger: 4 },
               { note: getNoteByOffset(root, 7), finger: 3 },
-              { note: getNoteByOffset(root, 11), finger: 1 }
+              { note: getNoteByOffset(root, 11), finger: 1, octave: 1 }
             ]
           },
           difficulty: 'intermediate'

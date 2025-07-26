@@ -51,43 +51,26 @@ export function calculateKeyRange(fingerings: Fingering[]): KeyRange {
     };
   }
 
-  // Find the lowest and highest notes
-  let lowestNote = fingerings[0];
-  let highestNote = fingerings[0];
+  // Use the first fingering as the starting point (typically the root note)
+  // This gives more predictable results than trying to find the mathematically lowest note
+  const rootNote = fingerings[0];
 
-  for (const fingering of fingerings) {
-    const currentOctave = fingering.octave || 4; // Default to octave 4
-    const lowestOctave = lowestNote.octave || 4;
-    const highestOctave = highestNote.octave || 4;
+  const startOctave = rootNote.octave ? 4 + rootNote.octave : 4;
 
-    // Compare by octave first, then by note position within octave
-    if (currentOctave < lowestOctave || 
-        (currentOctave === lowestOctave && getNotePosition(fingering.note) < getNotePosition(lowestNote.note))) {
-      lowestNote = fingering;
-    }
-
-    if (currentOctave > highestOctave || 
-        (currentOctave === highestOctave && getNotePosition(fingering.note) > getNotePosition(highestNote.note))) {
-      highestNote = fingering;
-    }
-  }
-
-  const startOctave = lowestNote.octave || 4;
-
-  // Generate exactly one octave starting from the lowest note
+  // Generate exactly one octave starting from the root note
   const whiteKeys: string[] = [];
   
-  const lowestBaseNote = getBaseNote(lowestNote.note);
+  const rootBaseNote = getBaseNote(rootNote.note);
   
-  // If the lowest note is a black key, find the white key to start from
+  // If the root note is a black key, find the white key to start from
   let startingWhiteKeyIndex = 0; // Default to C
   
-  if (WHITE_KEYS.includes(lowestBaseNote)) {
+  if (WHITE_KEYS.includes(rootBaseNote)) {
     // It's a white key, use it directly
-    startingWhiteKeyIndex = WHITE_KEYS.indexOf(lowestBaseNote);
+    startingWhiteKeyIndex = WHITE_KEYS.indexOf(rootBaseNote);
   } else {
     // It's a black key, find the white key below it
-    const notePosition = ALL_NOTES.indexOf(lowestBaseNote);
+    const notePosition = ALL_NOTES.indexOf(rootBaseNote);
     // Find the nearest white key at or below this position
     for (let i = notePosition; i >= 0; i--) {
       const note = ALL_NOTES[i];
@@ -114,7 +97,7 @@ export function calculateKeyRange(fingerings: Fingering[]): KeyRange {
   const blackKeys: Array<{ note: string; position: number }> = [];
 
   return {
-    startNote: lowestNote.note,
+    startNote: rootNote.note,
     endNote: whiteKeys[whiteKeys.length - 1],
     startOctave,
     endOctave: startOctave + 1,
@@ -123,13 +106,6 @@ export function calculateKeyRange(fingerings: Fingering[]): KeyRange {
   };
 }
 
-/**
- * Get the position of a note within an octave (0-11)
- */
-function getNotePosition(note: string): number {
-  const baseNote = getBaseNote(note);
-  return ALL_NOTES.indexOf(baseNote);
-}
 
 /**
  * Remove octave number from note name
