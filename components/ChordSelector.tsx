@@ -70,31 +70,6 @@ export default function ChordSelector({
 
   return (
     <div className={`bg-white rounded-xl shadow-lg p-6 ${className}`}>
-      {/* Tab Navigation */}
-      <div className="flex justify-center mb-6">
-        <div className="bg-gray-100 p-1 rounded-lg flex">
-          <button
-            onClick={() => setStep('popular')}
-            className={`px-3 py-2 md:px-4 md:py-2 rounded-md text-sm font-medium transition-all ${
-              step === 'popular' 
-                ? 'bg-white text-blue-600 shadow-sm' 
-                : 'text-gray-600 hover:text-gray-800'
-            }`}
-          >
-            Popular
-          </button>
-          <button
-            onClick={() => setStep('root')}
-            className={`px-3 py-2 md:px-4 md:py-2 rounded-md text-sm font-medium transition-all ${
-              step === 'root' 
-                ? 'bg-white text-blue-600 shadow-sm' 
-                : 'text-gray-600 hover:text-gray-800'
-            }`}
-          >
-            Custom
-          </button>
-        </div>
-      </div>
 
       {/* Current Selection Display */}
       {selectedRoot && selectedQuality && (

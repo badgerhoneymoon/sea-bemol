@@ -22,7 +22,9 @@ export default function Home() {
     addToFavorites, 
     removeFromFavorites, 
     addToRecent, 
-    isFavorite
+    isFavorite,
+    clearRecent,
+    clearFavorites
   } = useFavorites();
 
   // Get current chord data
@@ -73,9 +75,10 @@ export default function Home() {
         </header>
 
         <main className="space-y-6">
-          {/* Tab Navigation */}
-          <div className="bg-white rounded-xl shadow-lg p-2">
-            <div className="flex justify-center">
+          {/* Main Content Card */}
+          <div className="bg-white rounded-xl shadow-lg p-6 relative">
+            {/* Tab Navigation */}
+            <div className="flex justify-center mb-6">
               <div className="bg-gray-100 p-1 rounded-lg flex flex-wrap sm:flex-nowrap">
                 <button
                   onClick={() => setActiveTab('chords')}
@@ -117,83 +120,92 @@ export default function Home() {
                 </button>
               </div>
             </div>
-          </div>
+            {/* Favorite Button */}
+            {currentChord && (
+              <button
+                onClick={handleFavoriteToggle}
+                className={`absolute top-4 right-4 p-2 rounded-lg transition-all duration-200 ${
+                  isFavorite(currentChord, selectedVariation)
+                    ? 'text-blue-600 bg-blue-100 hover:bg-blue-200'
+                    : 'text-gray-400 hover:text-blue-600 hover:bg-blue-100'
+                }`}
+                title={isFavorite(currentChord, selectedVariation) ? 'Remove from favorites' : 'Add to favorites'}
+              >
+                {isFavorite(currentChord, selectedVariation) ? '⭐' : '☆'}
+              </button>
+            )}
 
-          {/* Tab Content */}
-          {activeTab === 'chords' && (
-            <ChordSelector
-              selectedRoot={selectedRoot}
-              selectedQuality={selectedQuality}
-              onRootChange={setSelectedRoot}
-              onQualityChange={setSelectedQuality}
-            />
-          )}
-
-          {activeTab === 'search' && (
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-semibold mb-4 text-center text-gray-700">
-                Search Chords
-              </h2>
-              <SearchChords onChordSelect={handleChordSelect} />
-            </div>
-          )}
-
-          {activeTab === 'favorites' && (
-            <FavoritesPanel
-              favorites={favorites}
-              recentChords={recentChords}
-              onChordSelect={handleChordSelect}
-              onRemoveFavorite={removeFromFavorites}
-            />
-          )}
-
-          {currentChord && (
-            <>
-              {/* Variation Selection */}
-              {currentChord.variations.length > 1 && (
-                <div className="bg-white rounded-xl shadow-lg p-4">
-                  <h3 className="text-lg font-semibold mb-3 text-center text-gray-700">
-                    Fingering Variations
-                  </h3>
-                  <div className="flex gap-2 justify-center flex-wrap">
-                    {currentChord.variations.map((variation, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setSelectedVariation(idx)}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                          selectedVariation === idx
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
-                        }`}
-                      >
-                        {variation.name}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-
-              {/* Piano Display - Both Hands */}
-              <div className="relative">
-                <HandComparison 
-                  chord={currentChord} 
-                  variationIndex={selectedVariation} 
+            {/* Tab Content */}
+            {activeTab === 'chords' && (
+              <>
+                <ChordSelector
+                  selectedRoot={selectedRoot}
+                  selectedQuality={selectedQuality}
+                  onRootChange={setSelectedRoot}
+                  onQualityChange={setSelectedQuality}
+                  className="border-0 shadow-none p-0"
                 />
-                <button
-                  onClick={handleFavoriteToggle}
-                  className={`absolute top-4 right-4 p-2 rounded-lg transition-all duration-200 ${
-                    isFavorite(currentChord, selectedVariation)
-                      ? 'text-blue-600 bg-blue-100 hover:bg-blue-200'
-                      : 'text-gray-400 hover:text-blue-600 hover:bg-blue-100'
-                  }`}
-                  title={isFavorite(currentChord, selectedVariation) ? 'Remove from favorites' : 'Add to favorites'}
-                >
-                  {isFavorite(currentChord, selectedVariation) ? '⭐' : '☆'}
-                </button>
-              </div>
-            </>
-          )}
+
+                {currentChord && (
+                  <>
+                    {/* Variation Selection */}
+                    {currentChord.variations.length > 1 && (
+                      <div className="mt-8 pt-6 border-t border-gray-200">
+                        <h3 className="text-lg font-semibold mb-3 text-center text-gray-700">
+                          Fingering Variations
+                        </h3>
+                        <div className="flex gap-2 justify-center flex-wrap">
+                          {currentChord.variations.map((variation, idx) => (
+                            <button
+                              key={idx}
+                              onClick={() => setSelectedVariation(idx)}
+                              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                                selectedVariation === idx
+                                  ? 'bg-blue-600 text-white'
+                                  : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                              }`}
+                            >
+                              {variation.name}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Piano Display - Both Hands */}
+                    <div className="mt-8 pt-6 border-t border-gray-200">
+                      <HandComparison 
+                        chord={currentChord} 
+                        variationIndex={selectedVariation}
+                        className="border-0 shadow-none p-0"
+                      />
+                    </div>
+                  </>
+                )}
+              </>
+            )}
+
+            {activeTab === 'search' && (
+              <>
+                <h2 className="text-xl font-semibold mb-4 text-center text-gray-700">
+                  Search Chords
+                </h2>
+                <SearchChords onChordSelect={handleChordSelect} />
+              </>
+            )}
+
+            {activeTab === 'favorites' && (
+              <FavoritesPanel
+                favorites={favorites}
+                recentChords={recentChords}
+                onChordSelect={handleChordSelect}
+                onRemoveFavorite={removeFromFavorites}
+                onClearRecent={clearRecent}
+                onClearFavorites={clearFavorites}
+                className="border-0 shadow-none p-0"
+              />
+            )}
+          </div>
         </main>
 
         {/* Footer */}

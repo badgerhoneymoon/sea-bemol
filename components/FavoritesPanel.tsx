@@ -7,6 +7,8 @@ interface FavoritesPanelProps {
   recentChords: FavoriteChord[];
   onChordSelect: (root: Note, quality: ChordQuality, variationIndex?: number) => void;
   onRemoveFavorite: (favoriteId: string) => void;
+  onClearRecent?: () => void;
+  onClearFavorites?: () => void;
   className?: string;
 }
 
@@ -15,6 +17,8 @@ export default function FavoritesPanel({
   recentChords, 
   onChordSelect, 
   onRemoveFavorite,
+  onClearRecent,
+  onClearFavorites,
   className = '' 
 }: FavoritesPanelProps) {
   const handleChordClick = (favoriteChord: FavoriteChord) => {
@@ -99,25 +103,17 @@ export default function FavoritesPanel({
       {(favorites.length > 0 || recentChords.length > 0) && (
         <div className="mt-6 pt-4 border-t border-gray-200">
           <div className="flex gap-2 justify-center">
-            {favorites.length > 0 && (
+            {favorites.length > 0 && onClearFavorites && (
               <button
-                onClick={() => {
-                  if (confirm('Clear all favorites?')) {
-                    // This would need to be passed down as a prop
-                  }
-                }}
+                onClick={onClearFavorites}
                 className="text-xs text-gray-500 hover:text-gray-700 px-3 py-1 rounded"
               >
                 Clear Favorites
               </button>
             )}
-            {recentChords.length > 0 && (
+            {recentChords.length > 0 && onClearRecent && (
               <button
-                onClick={() => {
-                  if (confirm('Clear recent chords?')) {
-                    // This would need to be passed down as a prop
-                  }
-                }}
+                onClick={onClearRecent}
                 className="text-xs text-gray-500 hover:text-gray-700 px-3 py-1 rounded"
               >
                 Clear Recent
