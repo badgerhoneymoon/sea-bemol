@@ -57,28 +57,28 @@ export default function Piano({ activeFingerings, className = '' }: PianoProps) 
   
   // Helper function to find active fingering for a note
   const getFingeringForNote = (note: string): Fingering | undefined => {
-    return activeFingerings.find(f => {
-      const baseNote = note.replace(/\d+$/, '');
-      const noteOctave = note.match(/\d+$/)?.[0];
-      
-      // Handle octave notation
+    const baseNote = note.replace(/\d+$/, '');
+    const noteOctave = note.match(/\d+$/)?.[0];
+    
+    // First, try to find an exact octave match
+    const exactMatch = activeFingerings.find(f => {
       if (f.octave) {
         const expectedOctave = (4 + f.octave).toString();
-        // If the note has an octave number, match it exactly
-        if (noteOctave) {
-          return f.note === baseNote && noteOctave === expectedOctave;
-        }
-        return false;
+        return f.note === baseNote && noteOctave === expectedOctave;
       }
-      
-      // No octave specified in fingering
-      if (noteOctave) {
-        // If the note has an octave number, it could be in base octave (4) or higher octave (5)
-        // Match both base octave and next octave for notes without explicit octave property
-        return f.note === baseNote && (noteOctave === '4' || noteOctave === '5');
-      }
-      return f.note === baseNote;
+      // For notes without octave property, only match base octave (4) exactly
+      return f.note === baseNote && (!noteOctave || noteOctave === '4');
     });
+    
+    if (exactMatch) return exactMatch;
+    
+    // If no exact match and we're looking for a note without octave number,
+    // try to find any matching base note
+    if (!noteOctave) {
+      return activeFingerings.find(f => f.note === baseNote && !f.octave);
+    }
+    
+    return undefined;
   };
   
   return (
