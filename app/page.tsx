@@ -7,9 +7,8 @@ import ChordSelector from '@/components/ChordSelector';
 import FavoritesPanel from '@/components/FavoritesPanel';
 import SearchChords from '@/components/SearchChords';
 import HandComparison from '@/components/HandComparison';
-import AudioToggle from '@/components/AudioToggle';
+// AudioToggle removed; synthetic audio mode disabled.
 import { useFavorites } from '@/hooks/useFavorites';
-import { unifiedAudioManager } from '@/lib/utils/audio';
 
 export default function Home() {
   const [selectedRoot, setSelectedRoot] = useState<Note | null>('C');
@@ -118,10 +117,7 @@ export default function Home() {
       <div className="max-w-7xl mx-auto p-4">
         {/* Header */}
         <header className="relative py-4 md:py-6">
-          {/* Audio Toggle - Top Right */}
-          <div className="absolute top-4 right-0 z-10">
-            <AudioToggle />
-          </div>
+          {/* (Audio toggle removed) */}
           
           {/* Main Header Content - Centered */}
           <div className="text-center">

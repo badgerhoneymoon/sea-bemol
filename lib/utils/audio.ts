@@ -627,20 +627,23 @@ export class UnifiedAudioManager {
 }
 
 // Singleton instances
-export const audioEngine = new AudioEngine();
 export const webAudioFontEngine = new WebAudioFontEngine();
-export const unifiedAudioManager = new UnifiedAudioManager();
 
-/**
- * Convenience function to play a note using unified audio manager
- */
-export const playNote = (note: string, duration?: number, velocity?: number) => {
-  return unifiedAudioManager.playNote(note, duration, velocity);
+const ensureRealisticReady = async () => {
+  if (!webAudioFontEngine.isReady) {
+    await webAudioFontEngine.initialize();
+  }
+  if (webAudioFontEngine.context?.state === 'suspended') {
+    await webAudioFontEngine.context.resume();
+  }
 };
 
-/**
- * Convenience function to play a chord using unified audio manager
- */
-export const playChord = (notes: string[], duration?: number, velocity?: number) => {
-  return unifiedAudioManager.playChord(notes, duration, velocity);
+export const playNote = async (note: string, duration?: number, velocity?: number) => {
+  await ensureRealisticReady();
+  return webAudioFontEngine.playNote(note, duration, velocity);
+};
+
+export const playChord = async (notes: string[], duration?: number, velocity?: number) => {
+  await ensureRealisticReady();
+  return webAudioFontEngine.playChord(notes, duration, velocity);
 };
