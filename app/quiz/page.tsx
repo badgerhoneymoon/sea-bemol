@@ -323,7 +323,7 @@ export default function Quiz() {
                       onClick={() => {
                         addDebugMessage('🔍 Checking WebAudioFont scripts...');
                         addDebugMessage(`WebAudioFontPlayer exists: ${typeof window.WebAudioFontPlayer !== 'undefined'}`);
-                        addDebugMessage(`Piano preset exists: ${typeof (window as any)._tone_0001_FluidR3_GM_sf2_file !== 'undefined'}`);
+                        addDebugMessage(`Piano preset exists: ${typeof (window as { _tone_0001_FluidR3_GM_sf2_file?: unknown })._tone_0001_FluidR3_GM_sf2_file !== 'undefined'}`);
                         
                         // Try to manually initialize
                         import('@/lib/utils/audio').then(({ webAudioFontEngine }) => {

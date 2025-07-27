@@ -8,7 +8,7 @@ import ChordSelector from '@/components/ChordSelector';
 import FavoritesPanel from '@/components/FavoritesPanel';
 import SearchChords from '@/components/SearchChords';
 import HandComparison from '@/components/HandComparison';
-// AudioToggle removed; synthetic audio mode disabled.
+// Audio system uses WebAudioFont with realistic piano samples
 import { useFavorites } from '@/hooks/useFavorites';
 
 export default function Home() {
