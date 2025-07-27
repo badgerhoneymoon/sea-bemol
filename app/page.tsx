@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Note, ChordQuality } from '@/types';
 import { getChordByRootAndQuality } from '@/data/chords';
 import ChordSelector from '@/components/ChordSelector';
@@ -11,6 +12,7 @@ import HandComparison from '@/components/HandComparison';
 import { useFavorites } from '@/hooks/useFavorites';
 
 export default function Home() {
+  const router = useRouter();
   const [selectedRoot, setSelectedRoot] = useState<Note | null>('C');
   const [selectedQuality, setSelectedQuality] = useState<ChordQuality | null>('major');
   const [selectedVariation, setSelectedVariation] = useState(0);
@@ -173,6 +175,13 @@ export default function Home() {
                       {favorites.length}
                     </span>
                   )}
+                </button>
+                <button
+                  onClick={() => router.push('/quiz')}
+                  className="px-3 py-2 sm:px-6 sm:py-3 rounded-md font-medium transition-all text-sm sm:text-base text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                >
+                  <span className="sm:hidden">🎯</span>
+                  <span className="hidden sm:inline">🎯 Quiz</span>
                 </button>
               </div>
             </div>
