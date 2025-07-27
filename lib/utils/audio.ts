@@ -238,7 +238,7 @@ export class WebAudioFontEngine {
 
       this.isInitialized = true;
       this.isLoading = false;
-      console.log('WebAudioFont piano initialized successfully');
+      // Piano preset fully decoded and ready.
     } catch (error) {
       console.error('Failed to initialize WebAudioFont piano:', error);
       this.isLoading = false;
@@ -514,12 +514,11 @@ export class UnifiedAudioManager {
   async initializeEngines(): Promise<void> {
     try {
       if (this.currentMode === 'realistic') {
-        // Defer WebAudioFont initialization until actual user gesture
-        console.log('Realistic audio mode detected – will initialize WebAudioFont on first user gesture');
+        // Defer WebAudioFont initialization until actual user gesture.
       } else {
         await this.synthEngine.initialize();
       }
-      console.log('Audio engines pre-initialized (non-blocking)');
+      // Audio engines pre-initialized (synthetic only)
     } catch (error) {
       console.error('Failed to initialize audio engines:', error);
     }

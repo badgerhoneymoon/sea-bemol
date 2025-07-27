@@ -34,22 +34,6 @@ export default function Home() {
     ? getChordByRootAndQuality(selectedRoot, selectedQuality)
     : null;
 
-  // Initialize audio engines after page load
-  useEffect(() => {
-    const initAudio = async () => {
-      try {
-        await unifiedAudioManager.initializeEngines();
-      } catch (error) {
-        console.error('Failed to initialize audio on page load:', error);
-      }
-    };
-
-    const timer = setTimeout(initAudio, 1000);
-    return () => clearTimeout(timer);
-  }, []);
-
-
-
   // Add to recent chords when chord changes
   // Avoid including functions/objects that change every render to prevent infinite loops
   useEffect(() => {
