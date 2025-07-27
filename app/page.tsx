@@ -44,15 +44,10 @@ export default function Home() {
       }
     };
 
-    // Wait a bit for WebAudioFont scripts to load
     const timer = setTimeout(initAudio, 1000);
     return () => clearTimeout(timer);
   }, []);
 
-  // Debug: Log current state
-  useEffect(() => {
-    console.log('Debug - selectedRoot:', selectedRoot, 'selectedQuality:', selectedQuality, 'currentChord:', currentChord?.symbol);
-  }, [selectedRoot, selectedQuality, currentChord]);
 
 
   // Add to recent chords when chord changes

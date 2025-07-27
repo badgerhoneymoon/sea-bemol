@@ -295,9 +295,10 @@ export class WebAudioFontEngine {
      await new Promise<void>((resolve) => {
        const checkDecoded = () => {
          // Access preset zones array length could vary
-         const preset: any = (window as any)[`_tone_${presetId}`];
-         if (preset && Array.isArray(preset.zones)) {
-           const allReady = preset.zones.every((z: any) => z.buffer && z.buffer.length > 0);
+         const preset = (window as unknown as Record<string, unknown>)[`_tone_${presetId}`] as WebAudioFontPreset | undefined;
+         if (preset && 'zones' in preset && Array.isArray(preset.zones)) {
+           const zones = preset.zones as Array<{ buffer?: { length: number } }>;
+           const allReady = zones.every((z) => z.buffer && z.buffer.length > 0);
            if (allReady) return resolve();
          }
          setTimeout(checkDecoded, 50);
@@ -306,7 +307,6 @@ export class WebAudioFontEngine {
      });
 
      // Final assignment
-     // @ts-ignore
      this.pianoPreset = window._tone_0001_FluidR3_GM_sf2_file;
   }
 
