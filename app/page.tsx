@@ -7,7 +7,9 @@ import ChordSelector from '@/components/ChordSelector';
 import FavoritesPanel from '@/components/FavoritesPanel';
 import SearchChords from '@/components/SearchChords';
 import HandComparison from '@/components/HandComparison';
+import AudioToggle from '@/components/AudioToggle';
 import { useFavorites } from '@/hooks/useFavorites';
+import { unifiedAudioManager } from '@/lib/utils/audio';
 
 export default function Home() {
   const [selectedRoot, setSelectedRoot] = useState<Note | null>('C');
@@ -31,6 +33,21 @@ export default function Home() {
   const currentChord = selectedRoot && selectedQuality 
     ? getChordByRootAndQuality(selectedRoot, selectedQuality)
     : null;
+
+  // Initialize audio engines after page load
+  useEffect(() => {
+    const initAudio = async () => {
+      try {
+        await unifiedAudioManager.initializeEngines();
+      } catch (error) {
+        console.error('Failed to initialize audio on page load:', error);
+      }
+    };
+
+    // Wait a bit for WebAudioFont scripts to load
+    const timer = setTimeout(initAudio, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Debug: Log current state
   useEffect(() => {
@@ -121,13 +138,21 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
       <div className="max-w-7xl mx-auto p-4">
         {/* Header */}
-        <header className="text-center py-4 md:py-6">
-          <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-gray-800 mb-2">
-            🎹 Piano Chord Fingerings
-          </h1>
-          <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto px-4">
-            Interactive guide for piano chord fingerings. Learn proper hand positions for all chord types.
-          </p>
+        <header className="relative py-4 md:py-6">
+          {/* Audio Toggle - Top Right */}
+          <div className="absolute top-4 right-0 z-10">
+            <AudioToggle />
+          </div>
+          
+          {/* Main Header Content - Centered */}
+          <div className="text-center">
+            <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-gray-800 mb-2">
+              🎹 Piano Chord Fingerings
+            </h1>
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto px-4">
+              Interactive guide for piano chord fingerings. Learn proper hand positions for all chord types.
+            </p>
+          </div>
         </header>
 
         <main className="space-y-6">

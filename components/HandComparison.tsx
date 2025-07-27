@@ -3,7 +3,6 @@
 import { Chord } from '@/types';
 import Piano from './Piano';
 import FingerDiagram from './FingerDiagram';
-import { playChord } from '@/lib/utils/audio';
 
 interface HandComparisonProps {
   chord: Chord;
@@ -13,52 +12,19 @@ interface HandComparisonProps {
   className?: string;
 }
 
-export default function HandComparison({ chord, variationIndex, onFavoriteToggle, isFavorite, className = '' }: HandComparisonProps) {
+export default function HandComparison({ 
+  chord, 
+  variationIndex, 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onFavoriteToggle, 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  isFavorite, 
+  className = '' 
+}: HandComparisonProps) {
   const variation = chord.variations[variationIndex];
   const leftFingerings = variation?.fingerings.left || [];
   const rightFingerings = variation?.fingerings.right || [];
 
-  const handlePlayChord = async () => {
-    try {
-      // Collect all notes from both hands' fingerings
-      const allNotes: string[] = [];
-      
-      // Add notes from right hand fingerings
-      rightFingerings.forEach(fingering => {
-        let noteWithOctave = fingering.note;
-        
-        // Add octave if specified in fingering
-        if (fingering.octave !== undefined) {
-          const baseOctave = 4; // Default middle octave
-          const actualOctave = baseOctave + fingering.octave;
-          noteWithOctave = `${fingering.note}${actualOctave}`;
-        }
-        
-        allNotes.push(noteWithOctave);
-      });
-      
-      // Add notes from left hand fingerings
-      leftFingerings.forEach(fingering => {
-        let noteWithOctave = fingering.note;
-        
-        // Add octave if specified in fingering
-        if (fingering.octave !== undefined) {
-          const baseOctave = 4; // Default middle octave
-          const actualOctave = baseOctave + fingering.octave;
-          noteWithOctave = `${fingering.note}${actualOctave}`;
-        }
-        
-        allNotes.push(noteWithOctave);
-      });
-      
-      // Remove duplicates while preserving octave differences
-      const uniqueNotes = [...new Set(allNotes)];
-      
-      await playChord(uniqueNotes, 1.5, 0.3);
-    } catch (error) {
-      console.error('Failed to play chord:', error);
-    }
-  };
 
   return (
     <div className={`${className}`}>
