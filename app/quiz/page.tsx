@@ -25,7 +25,6 @@ interface QuizState {
   totalQuestions: number;
   quizCompleted: boolean;
   isLoading: boolean;
-  debugMessages: string[];
 }
 
 const TOTAL_QUESTIONS = 10;
@@ -42,8 +41,7 @@ export default function Quiz() {
     currentQuestionNumber: 1,
     totalQuestions: 0,
     quizCompleted: false,
-    isLoading: false,
-    debugMessages: []
+    isLoading: false
   });
 
   // Generate a random chord
@@ -72,25 +70,17 @@ export default function Quiz() {
     return options.sort(() => 0.5 - Math.random());
   };
 
-  // Add debug message to visible panel
-  const addDebugMessage = (message: string) => {
-    console.log(message); // Keep console.log for debugging
-    setQuizState(prev => ({
-      ...prev,
-      debugMessages: [...prev.debugMessages.slice(-4), `${new Date().toLocaleTimeString()}: ${message}`]
-    }));
-  };
 
   // Play the current chord
   const playCurrentChord = useCallback(async (chord?: Chord) => {
     const chordToPlay = chord || quizState.currentChord;
     if (!chordToPlay) {
-      addDebugMessage('No chord to play');
+      console.log('No chord to play');
       return;
     }
     
     try {
-      addDebugMessage('🎹 Starting WebAudioFont chord playback...');
+      console.log('🎹 Starting WebAudioFont chord playback...');
       const { playChord } = await import('@/lib/utils/audio');
       
       const variation = chordToPlay.variations[0];
@@ -120,13 +110,13 @@ export default function Quiz() {
       });
       
       const uniqueNotes = [...new Set(allNotes)];
-      addDebugMessage(`Notes: ${uniqueNotes.join(', ')}`);
+      console.log(`Notes: ${uniqueNotes.join(', ')}`);
       
       await playChord(uniqueNotes, 1.5, 0.3);
-      addDebugMessage('✅ WebAudioFont chord played successfully!');
+      console.log('✅ WebAudioFont chord played successfully!');
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      addDebugMessage(`❌ WebAudioFont error: ${errorMessage}`);
+      console.error('❌ WebAudioFont error:', errorMessage);
       console.error('Full error:', error);
     }
   }, [quizState.currentChord]);
@@ -161,8 +151,7 @@ export default function Quiz() {
       currentQuestionNumber: 1,
       totalQuestions: 0,
       quizCompleted: false,
-      isLoading: false,
-      debugMessages: []
+      isLoading: false
     });
     startNewQuestion();
   }, [startNewQuestion]);
@@ -318,24 +307,6 @@ export default function Quiz() {
                       🔊 {quizState.showResult ? 'Play Again' : 'Play Chord'}
                     </button>
                     
-                    {/* Debug WebAudioFont Loading */}
-                    <button
-                      onClick={() => {
-                        addDebugMessage('🔍 Checking WebAudioFont scripts...');
-                        addDebugMessage(`WebAudioFontPlayer exists: ${typeof window.WebAudioFontPlayer !== 'undefined'}`);
-                        addDebugMessage(`Piano preset exists: ${typeof (window as { _tone_0001_FluidR3_GM_sf2_file?: unknown })._tone_0001_FluidR3_GM_sf2_file !== 'undefined'}`);
-                        
-                        // Try to manually initialize
-                        import('@/lib/utils/audio').then(({ webAudioFontEngine }) => {
-                          addDebugMessage(`Engine ready: ${webAudioFontEngine.isReady}`);
-                          addDebugMessage(`Engine loading: ${webAudioFontEngine.loading}`);
-                          addDebugMessage(`Audio context: ${!!webAudioFontEngine.context}`);
-                        });
-                      }}
-                      className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded text-sm"
-                    >
-                      🔍 Debug Scripts
-                    </button>
                   </div>
                 </div>
               )}
@@ -431,21 +402,6 @@ export default function Quiz() {
           )}
         </div>
 
-        {/* Debug Panel for Mobile */}
-        {quizState.debugMessages.length > 0 && (
-          <div className="bg-gray-800 text-green-400 rounded-lg p-4 mt-4 font-mono text-xs">
-            <h3 className="text-white font-bold mb-2">🔧 Debug Log:</h3>
-            {quizState.debugMessages.map((message, index) => (
-              <div key={index} className="mb-1">{message}</div>
-            ))}
-            <button
-              onClick={() => setQuizState(prev => ({ ...prev, debugMessages: [] }))}
-              className="mt-2 bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs"
-            >
-              Clear
-            </button>
-          </div>
-        )}
 
         {/* Footer */}
         <footer className="text-center py-6 text-gray-500 text-sm">
